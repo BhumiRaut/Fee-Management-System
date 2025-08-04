@@ -41,27 +41,47 @@ A full-stack web application for managing student fee records across first, seco
 ## 📁 Project Structure
 FeeManagementSystem/
 ├── backend/
+
 │ └── src/
+
 │ └── main/
+
 │ ├── java/
+
 │ │ └── com/
+
 │ │ └── feesystem/
+
 │ │ └── FeeManager/
+
 │ │ ├── FeeManagerApplication.java
+
 │ │ ├── Student.java
+
 │ │ ├── FeeRecord.java
+
 │ │ ├── StudentRepository.java
+
 │ │ ├── FeeRecordRepository.java
+
 │ │ └── FeeController.java
+
 │ └── resources/
+
 │ ├── application.properties
 │
 ├── frontend/
+
 │ ├── index.html
+
 │ ├── style.css
+
 │ └── script.js
+
 │
 ├── pom.xml
+
 └── README.md
 
+---
 
