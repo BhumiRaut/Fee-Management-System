@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Diploma Fee Management System</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f4f8;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #004d40;
+    }
+
+    .form-section, .table-section {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      margin-top: 15px;
+      background: #009688;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #00796b;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #009688;
+      color: white;
+    }
+
+    td {
+      background: #f9f9f9;
+    }
+
+    .search-box {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+
+    .search-box input {
+      width: 50%;
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <h1>Diploma Student Fee Management System</h1>
+
+  <div class="form-section">
+    <h2>Add Student + Fee</h2>
+
+    <label>Name:</label>
+    <input type="text" id="name">
+
+    <label>Enrollment Number:</label>
+    <input type="text" id="enrollmentNumber">
+
+    <label>Gender:</label>
+    <select id="gender">
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+    </select>
+
+    <label>Address:</label>
+    <input type="text" id="address">
+
+    <label>Caste:</label>
+    <select id="caste">
+      <option value="">-- Select Caste --</option>
+      <option value="General">General</option>
+      <option value="OBC">OBC</option>
+      <option value="SC">SC</option>
+      <option value="ST">ST</option>
+      <option value="NT">NT</option>
+      <option value="SBC">SBC</option>
+      <option value="Other">Other</option>
+    </select>
+
+    <label>Year:</label>
+    <select id="year">
+      <option value="First Year">First Year</option>
+      <option value="Second Year">Second Year</option>
+      <option value="Third Year">Third Year</option>
+    </select>
+
+    <label>Total Fee:</label>
+    <input type="number" id="totalFee">
+
+    <label>Paid Fee:</label>
+    <input type="number" id="paidFee">
+
+    <label>Payment Date:</label>
+    <input type="date" id="paymentDate">
+
+    <button onclick="addStudentAndFee()">Submit</button>
+  </div>
+
+  <div class="table-section">
+    <h2>All Students with Fee Info</h2>
+
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search by Name or Enrollment..." onkeyup="filterTable()">
+    </div>
+
+    <table id="studentTable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Enrollment</th>
+          <th>Gender</th>
+          <th>Address</th>
+          <th>Caste</th>
+          <th>Year</th>
+          <th>Total Fee</th>
+          <th>Paid Fee</th>
+          <th>Pending Fee</th>
+          <th>Payment Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Data will load here -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    const api = "http://localhost:8080/api";
+
+    async function addStudentAndFee() {
+      const name = document.getElementById("name").value;
+      const enrollmentNumber = document.getElementById("enrollmentNumber").value;
+      const gender = document.getElementById("gender").value;
+      const address = document.getElementById("address").value;
+      const caste = document.getElementById("caste").value;
+      const year = document.getElementById("year").value;
+      const totalFee = parseFloat(document.getElementById("totalFee").value) || 0;
+      const paidFee = parseFloat(document.getElementById("paidFee").value) || 0;
+      const paymentDate = document.getElementById("paymentDate").value;
+
+      if (!name || !enrollmentNumber || !gender || !address || !caste || !year || totalFee <= 0) {
+        alert("Please fill all required fields correctly.");
+        return;
+      }
+
+      const student = { name, enrollmentNumber, gender, address, caste, year };
+
+      const studentRes = await fetch(`${api}/students`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(student)
+      });
+
+      const savedStudent = await studentRes.json();
+
+      const fee = {
+        totalFee: totalFee,
+        paidFee: paidFee,
+        paymentDate: paymentDate,
+        student: savedStudent
+      };
+
+      await fetch(`${api}/fees`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(fee)
+      });
+
+      loadData();
+    }
+
+    async function loadData() {
+      const [studentsRes, feesRes] = await Promise.all([
+        fetch(`${api}/students`),
+        fetch(`${api}/fees`)
+      ]);
+
+      const students = await studentsRes.json();
+      const fees = await feesRes.json();
+
+      renderTable(students, fees);
+    }
+
+    function renderTable(studentsList, feesList) {
+      const tbody = document.querySelector("#studentTable tbody");
+      tbody.innerHTML = "";
+
+      studentsList.forEach(student => {
+        const fee = feesList.find(f => f.student && f.student.id === student.id);
+        const total = fee ? Number(fee.totalFee || 0) : 0;
+        const paid = fee ? Number(fee.paidFee || 0) : 0;
+        const pending = total - paid;
+
+        const row = `
+          <tr>
+            <td>${student.id}</td>
+            <td>${student.name}</td>
+            <td>${student.enrollmentNumber}</td>
+            <td>${student.gender}</td>
+            <td>${student.address}</td>
+            <td>${student.caste}</td>
+            <td>${student.year}</td>
+            <td>${total.toFixed(2)}</td>
+            <td>${paid.toFixed(2)}</td>
+            <td>${pending.toFixed(2)}</td>
+            <td>${fee && fee.paymentDate ? fee.paymentDate : '-'}</td>
+          </tr>
+        `;
+        tbody.innerHTML += row;
+      });
+    }
+
+    function filterTable() {
+      const input = document.getElementById("searchInput").value.toLowerCase();
+      const rows = document.querySelectorAll("#studentTable tbody tr");
+
+      rows.forEach(row => {
+        const name = row.children[1].textContent.toLowerCase();
+        const enroll = row.children[2].textContent.toLowerCase();
+        if (name.includes(input) || enroll.includes(input)) {
+          row.style.display = "";
+        } else {
+          row.style.display = "none";
+        }
+      });
+    }
+
+    window.onload = loadData;
+  </script>
+</body>
+</html>
