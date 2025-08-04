@@ -84,4 +84,11 @@ FeeManagementSystem/
 └── README.md
 
 ---
+## 📸 Output(Screenshot)
+<img width="1863" height="886" alt="screen1outputspring" src="https://github.com/user-attachments/assets/8a3f34ab-4eb7-4e84-a210-5b5cc27e958e" />
+
+
+<img width="1920" height="1080" alt="Screenshot (3)" src="https://github.com/user-attachments/assets/6b4df991-07d1-4f68-b8f1-87e15b369afc" />
+
+
 
