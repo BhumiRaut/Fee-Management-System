@@ -91,4 +91,20 @@ FeeManagementSystem/
 <img width="1920" height="1080" alt="Screenshot (3)" src="https://github.com/user-attachments/assets/6b4df991-07d1-4f68-b8f1-87e15b369afc" />
 
 
+<img width="1920" height="1080" alt="Screenshot (4)" src="https://github.com/user-attachments/assets/ce900d31-3080-4bb3-b833-2dc31b0767f1" />
+
+---
+👨‍💻 Developer Information
+Name: Bhumi Yuvraj Raut
+
+Email: bhumiraut5555@gmail.com
+
+GitHub: github.com/BhumiRaut
+
+
+
+
+
+
+
 
