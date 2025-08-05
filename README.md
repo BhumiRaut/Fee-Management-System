@@ -37,52 +37,35 @@ A full-stack web application for managing student fee records across first, seco
    CREATE DATABASE fee_db;
  
 ---
+##  📁 Project Structure
+```plaintext
 
-## 📁 Project Structure
+##  📁 Project Structure
 FeeManagementSystem/
 ├── backend/
-
 │ └── src/
-
 │ └── main/
-
 │ ├── java/
-
 │ │ └── com/
-
 │ │ └── feesystem/
-
 │ │ └── FeeManager/
-
 │ │ ├── FeeManagerApplication.java
-
 │ │ ├── Student.java
-
 │ │ ├── FeeRecord.java
-
 │ │ ├── StudentRepository.java
-
 │ │ ├── FeeRecordRepository.java
-
 │ │ └── FeeController.java
-
 │ └── resources/
-
 │ ├── application.properties
 │
 ├── frontend/
-
 │ ├── index.html
-
 │ ├── style.css
-
 │ └── script.js
-
 │
 ├── pom.xml
-
 └── README.md
-
+```
 ---
 ## 📸 Output(Screenshot)
 <img width="1863" height="886" alt="screen1outputspring" src="https://github.com/user-attachments/assets/8a3f34ab-4eb7-4e84-a210-5b5cc27e958e" />
