@@ -40,7 +40,6 @@ A full-stack web application for managing student fee records across first, seco
 ##  📁 Project Structure
 ```plaintext
 
-##  📁 Project Structure
 FeeManagementSystem/
 ├── backend/
 │ └── src/
